@@ -19,7 +19,6 @@
     <Folder Include="Models\Authentications\" />
     <Folder Include="Models\Tasks\" />
     <Folder Include="Models\Operations\" />
-    <Folder Include="Models\Responses\" />
     <Folder Include="Data\" />
     <Folder Include="Services\" />
     <Folder Include="Repositories\" />
