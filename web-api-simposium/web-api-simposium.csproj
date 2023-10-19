@@ -12,11 +12,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
     <Folder Include="Attributes\" />
+    <Folder Include="Controllers\Authentications\" />
+    <Folder Include="Controllers\Operations\" />
     <Folder Include="Helpers\" />
     <Folder Include="Middlewares\" />
+    <Folder Include="Models\Authentications\" />
+    <Folder Include="Models\Tasks\" />
+    <Folder Include="Models\Operations\" />
+    <Folder Include="Models\Responses\" />
+    <Folder Include="Models\Queries\" />
+    <Folder Include="Data\" />
     <Folder Include="Services\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
