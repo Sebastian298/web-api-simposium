@@ -17,11 +17,4 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Authentications\" />
-    <Folder Include="Controllers\Operations\" />
-    <Folder Include="Models\Tasks\" />
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>
