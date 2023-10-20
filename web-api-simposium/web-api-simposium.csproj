@@ -19,7 +19,6 @@
     <Folder Include="Attributes\" />
     <Folder Include="Controllers\Authentications\" />
     <Folder Include="Controllers\Operations\" />
-    <Folder Include="Middlewares\" />
     <Folder Include="Models\Tasks\" />
     <Folder Include="Models\Operations\" />
     <Folder Include="Repositories\" />

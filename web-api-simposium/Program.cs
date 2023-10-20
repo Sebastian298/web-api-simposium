@@ -1,4 +1,5 @@
 using web_api_simposium.Data;
+using web_api_simposium.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<JwtMiddleware>();
 
 app.MapControllers();
 
