@@ -20,7 +20,6 @@
     <Folder Include="Controllers\Authentications\" />
     <Folder Include="Controllers\Operations\" />
     <Folder Include="Models\Tasks\" />
-    <Folder Include="Models\Operations\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
 
