@@ -6,7 +6,7 @@ namespace web_api_simposium.Helpers
     {
         public static StoredProcedureData GetConfigurationStoredProcedure(IConfiguration configuration, string repositoryKey)
         {
-            return new(configuration[$"{repositoryKey}:ConnectionId"], configuration[$"{repositoryKey}:SchemaName"], configuration[$"{repositoryKey}:SpName"]);
+            return new(configuration[$"{repositoryKey}:connectionId"], configuration[$"{repositoryKey}:schemaName"], configuration[$"{repositoryKey}:spName"]);
         }
 
     }
