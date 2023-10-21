@@ -9,6 +9,8 @@ namespace web_api_simposium.Controllers.BusinessLogic
 {
     [ApiController]
     [Route("simposium-api/users")]
+    [ApiExplorerSettings(GroupName = "Users")]
+    [Produces("application/json")]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
