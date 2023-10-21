@@ -5,6 +5,7 @@ using System.Reflection;
 using web_api_simposium.Attributes;
 using web_api_simposium.Data;
 using web_api_simposium.Middlewares;
+using web_api_simposium.Repositories.BusinessLogic.Task;
 using web_api_simposium.Repositories.BusinessLogic.User;
 using web_api_simposium.Services;
 
@@ -22,6 +23,7 @@ builder.Services.AddScoped<DapperContext>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IDapperService, DapperService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -59,8 +61,25 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
+    c.SwaggerDoc("Tasks", new OpenApiInfo
+    {
+        Title = "Users",
+        Version = "v1",
+        Description = "Documento para la administracion de las tareas de los usuarios",
+        Contact = new OpenApiContact
+        {
+            Name = "Jaime Tenorio",
+            Email = "test@test.com",
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Use inder license ###"
+        }
+    });
+
 });
 
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -79,6 +98,7 @@ if (app.Environment.IsDevelopment())
         c.InjectStylesheet("/swagger-ui/custom.css");
         c.InjectJavascript("/swagger-ui/custom.js");
         c.SwaggerEndpoint("Users/swagger.json", "Users");
+        c.SwaggerEndpoint("Tasks/swagger.json", "Tasks");
     });
 }
 else
@@ -96,6 +116,7 @@ else
         c.InjectStylesheet("/swagger-ui/custom.css");
         c.InjectJavascript("/swagger-ui/custom.js");
         c.SwaggerEndpoint("Users/swagger.json", "Users");
+        c.SwaggerEndpoint("Tasks/swagger.json", "Tasks");
     });
 }
 

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Threading.Tasks;
 using web_api_simposium.Helpers;
@@ -23,6 +24,7 @@ namespace web_api_simposium.Repositories.BusinessLogic.Task
 
         public async Task<GenericResponse<GenericCrud>> DeleteTaskAsync(string taskId)
         {
+            var token = string.IsNullOrEmpty(_httpContext.HttpContext!.Items["RefreshToken"]?.ToString()) ? null : _httpContext.HttpContext.Items["RefreshToken"]!.ToString();
             try
             {
                 var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "storedProcedureSettings:task:deleteTask");
@@ -36,23 +38,28 @@ namespace web_api_simposium.Repositories.BusinessLogic.Task
                 if (result.HasError)
                 {
                     var error = MessageErrorBuilder.GenerateError(result.Message ?? "");
-                    return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = error };
+                    return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = error, Token = token, };
                 }
                 return new GenericResponse<GenericCrud>()
                 {
                     StatusCode = 200,
-                    Content = result.Results
+                    Content = result.Results,
+                    Token = token,
                 };
             }
             catch (Exception ex)
             {
-                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) };
+                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message),
+                    Token = token
+                };
 
             }
         }
 
         public async Task<GenericResponse<List<TaskResponseGet>>> GetAllTasksAsync()
         {
+            var token = string.IsNullOrEmpty(_httpContext.HttpContext!.Items["RefreshToken"]?.ToString()) ? null : _httpContext.HttpContext.Items["RefreshToken"]!.ToString();
+
             try
             {
                 var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "storedProcedureSettings:task:getAllTask");
@@ -65,23 +72,26 @@ namespace web_api_simposium.Repositories.BusinessLogic.Task
                 if (result.HasError)
                 {
                     var error = MessageErrorBuilder.GenerateError(result.Message ?? "");
-                    return new GenericResponse<List<TaskResponseGet>>() { StatusCode = 500, Message = error };
+                    return new GenericResponse<List<TaskResponseGet>>() { StatusCode = 500, Message = error, Token = token, };
                 }
                 return new GenericResponse<List<TaskResponseGet>>()
                 {
                     StatusCode = 200,
-                    Content = result.Results
+                    Content = result.Results,
+                    Token = token,
                 };
             }
             catch (Exception ex)
             {
-                return new GenericResponse<List<TaskResponseGet>> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) };
+                return new GenericResponse<List<TaskResponseGet>> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message), Token = string.IsNullOrEmpty(_httpContext.HttpContext!.Items["RefreshToken"]?.ToString()) ? null : _httpContext.HttpContext.Items["RefreshToken"]!.ToString(), };
 
             }
         }
 
         public async Task<GenericResponse<List<TaskResponseGet>>> GetCompletedTasksAsync()
         {
+            var token = string.IsNullOrEmpty(_httpContext.HttpContext!.Items["RefreshToken"]?.ToString()) ? null : _httpContext.HttpContext.Items["RefreshToken"]!.ToString();
+
             try
             {
                 var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "storedProcedureSettings:task:getCompletedTask");
@@ -94,22 +104,25 @@ namespace web_api_simposium.Repositories.BusinessLogic.Task
                 if (result.HasError)
                 {
                     var error = MessageErrorBuilder.GenerateError(result.Message ?? "");
-                    return new GenericResponse<List<TaskResponseGet>>() { StatusCode = 500, Message = error };
+                    return new GenericResponse<List<TaskResponseGet>>() { StatusCode = 500, Message = error, Token = token, };
                 }
                 return new GenericResponse<List<TaskResponseGet>>()
                 {
                     StatusCode = 200,
-                    Content = result.Results
+                    Content = result.Results,
+                    Token = token,
                 };
             }
             catch (Exception ex)
             {
-                return new GenericResponse<List<TaskResponseGet>> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) };
+                return new GenericResponse<List<TaskResponseGet>> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message), Token = token, };
             }
         }
 
         public async Task<GenericResponse<TaskResponseGet>> GetSpecificTaskAsync(string taskId)
         {
+            var token = string.IsNullOrEmpty(_httpContext.HttpContext!.Items["RefreshToken"]?.ToString()) ? null : _httpContext.HttpContext.Items["RefreshToken"]!.ToString();
+
             try
             {
                 var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "storedProcedureSettings:task:getSpecificTask");
@@ -123,23 +136,26 @@ namespace web_api_simposium.Repositories.BusinessLogic.Task
                 if (result.HasError)
                 {
                     var error = MessageErrorBuilder.GenerateError(result.Message??"");
-                    return new GenericResponse<TaskResponseGet>() { StatusCode = 500, Message = error };
+                    return new GenericResponse<TaskResponseGet>() { StatusCode = 500, Message = error, Token =token };
                 }
                 return new GenericResponse<TaskResponseGet>()
                 {
                     StatusCode = 200,
-                    Content = result.Results
+                    Content = result.Results,
+                    Token = token
                 };
             }
             catch (Exception ex)
             {
-                return new GenericResponse<TaskResponseGet> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) };
+                return new GenericResponse<TaskResponseGet> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message),Token=token };
 
             }
         }
 
         public async Task<GenericResponse<GenericCrud>> TaskRegistrationAsync(TaskRegistration task)
         {
+            var token = string.IsNullOrEmpty(_httpContext.HttpContext!.Items["RefreshToken"]?.ToString()) ? null : _httpContext.HttpContext.Items["RefreshToken"]!.ToString();
+
             try
             {
                 var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "storedProcedureSettings:task:taskRegistration");
@@ -155,20 +171,22 @@ namespace web_api_simposium.Repositories.BusinessLogic.Task
                 if (!result.HasError)
                 {
                     return result.Results!.Success
-                        ? new GenericResponse<GenericCrud> { StatusCode = 201, Content = result.Results }
-                        : new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(result.Results.Exception) };
+                        ? new GenericResponse<GenericCrud> { StatusCode = 201, Content = result.Results , Token = token }
+                        : new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(result.Results.Exception) , Token = token };
                 }
 
-                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(result.Message ?? "") };
+                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(result.Message ?? "") , Token = token };
             }
             catch (Exception ex)
             {
-                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) };
+                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) , Token = token };
             }
         }
 
-        public async Task<GenericResponse<GenericCrud>> UpdatedTaskAsync(TaskUpdated task)
+        public async Task<GenericResponse<GenericCrud>> UpdateTaskAsync(TaskUpdated task)
         {
+            var token = string.IsNullOrEmpty(_httpContext.HttpContext!.Items["RefreshToken"]?.ToString()) ? null : _httpContext.HttpContext.Items["RefreshToken"]!.ToString();
+
             try
             {
                 var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "storedProcedureSettings:task:taskUpdate");
@@ -182,15 +200,15 @@ namespace web_api_simposium.Repositories.BusinessLogic.Task
                 if (!result.HasError)
                 {
                     return result.Results!.Success
-                        ? new GenericResponse<GenericCrud> { StatusCode = 201, Content = result.Results }
-                        : new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(result.Results.Exception) };
+                        ? new GenericResponse<GenericCrud> { StatusCode = 200, Content = result.Results , Token = token }
+                        : new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(result.Results.Exception) , Token = token };
                 }
 
-                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(result.Message ?? "") };
+                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(result.Message ?? "") , Token = token };
             }
             catch (Exception ex)
             {
-                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) };
+                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) , Token = token };
             }
         }
     }
