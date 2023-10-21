@@ -64,30 +64,30 @@ namespace web_api_simposium.Repositories.BusinessLogic.User
 
                 if (!result.HasError)
                 {
-                    //if (result.Results!.Success)
-                    //{
-                    //    TokenData tokenData = new()
-                    //    {
-                    //        UserId = result.Results!.Id.ToString(),
-                    //    };
-                    //    var responseService = _jwtService.GenerateToken(tokenData, "tallerApiKey");
-                    //    string tokenSend = new JwtSecurityTokenHandler().WriteToken(responseService);
-                    //    return new GenericResponse<UserLoginResponse>()
-                    //    {
-                    //        StatusCode = 200,
-                    //        Content = result.Results,
-                    //        Token = tokenSend
-                    //    };
+                    if (result.Results!.Success)
+                    {
+                        TokenData tokenData = new()
+                        {
+                            UserId = result.Results!.Id.ToString(),
+                        };
+                        var responseService = _jwtService.GenerateToken(tokenData, "tallerApiKey");
+                        string tokenSend = new JwtSecurityTokenHandler().WriteToken(responseService);
+                        return new GenericResponse<UserLoginResponse>()
+                        {
+                            StatusCode = 200,
+                            Content = result.Results,
+                            Token = tokenSend
+                        };
 
-                    //}
-                    //else
-                    //{
-                    //    return new GenericResponse<UserLoginResponse> { StatusCode = 404, Content = result.Results };
-                    //}
+                    }
+                    else
+                    {
+                        return new GenericResponse<UserLoginResponse> { StatusCode = 404, Content = result.Results };
+                    }
 
-                    return result.Results!.Success
-                        ? new GenericResponse<UserLoginResponse> { StatusCode = 200, Content = result.Results }
-                        : new GenericResponse<UserLoginResponse> { StatusCode = 404, Content = result.Results };
+                    //return result.Results!.Success
+                    //    ? new GenericResponse<UserLoginResponse> { StatusCode = 200, Content = result.Results }
+                    //    : new GenericResponse<UserLoginResponse> { StatusCode = 404, Content = result.Results };
                 }
 
                 return new GenericResponse<UserLoginResponse> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(result.Message ?? "") };

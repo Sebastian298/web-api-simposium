@@ -6,7 +6,7 @@ namespace web_api_simposium.Models.Operations
     {
         [Required(ErrorMessage ="The {0} is required")]
         [StringLength(50, MinimumLength = 5, ErrorMessage = "The number of characters of the user name must be between 5 to 50")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚüÜ]*$", ErrorMessage = "The {0} does not have a valid format")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]*$", ErrorMessage = "The {0} does not have a valid format")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "The {0} is required")]
