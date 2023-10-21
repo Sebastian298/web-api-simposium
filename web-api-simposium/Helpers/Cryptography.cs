@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace web_api_simposium.Helpers
@@ -14,6 +15,19 @@ namespace web_api_simposium.Helpers
 
                 return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
             }
+        }
+
+        public static string GetUserIdByJwt(string authorizationHeader)
+        {
+            if (authorizationHeader != null)
+            {
+                var token = authorizationHeader.Substring(7);
+
+                var handler = new JwtSecurityTokenHandler();
+                var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+                return tokenS.Claims.FirstOrDefault(claim => claim.Type == "userId").Value;
+            }
+            return "";
         }
     }
 }

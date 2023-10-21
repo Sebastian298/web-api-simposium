@@ -5,7 +5,7 @@ using System.Reflection;
 using web_api_simposium.Attributes;
 using web_api_simposium.Data;
 using web_api_simposium.Middlewares;
-using web_api_simposium.Repositories.User;
+using web_api_simposium.Repositories.BusinessLogic.User;
 using web_api_simposium.Services;
 
 var builder = WebApplication.CreateBuilder(args);

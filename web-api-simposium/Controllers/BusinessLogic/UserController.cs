@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using web_api_simposium.Helpers;
 using web_api_simposium.Models.Operations;
 using web_api_simposium.Models.Responses;
-using web_api_simposium.Repositories.User;
+using web_api_simposium.Repositories.BusinessLogic.User;
 
 namespace web_api_simposium.Controllers.BusinessLogic
 {
