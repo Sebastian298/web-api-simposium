@@ -7,5 +7,9 @@ namespace web_api_simposium.Repositories.BusinessLogic.Task
     {
         Task<GenericResponse<GenericCrud>> TaskRegistrationAsync(TaskRegistration task);
         Task<GenericResponse<TaskResponseGet>> GetSpecificTaskAsync(string taskId);
+        Task<GenericResponse<List<TaskResponseGet>>> GetAllTasksAsync();
+        Task<GenericResponse<List<TaskResponseGet>>> GetCompletedTasksAsync();
+        Task<GenericResponse<GenericCrud>> UpdatedTaskAsync(TaskUpdated task);
+        Task<GenericResponse<GenericCrud>> DeleteTaskAsync(string taskId);
     }
 }

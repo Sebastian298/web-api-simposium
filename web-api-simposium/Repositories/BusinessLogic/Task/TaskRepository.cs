@@ -21,6 +21,93 @@ namespace web_api_simposium.Repositories.BusinessLogic.Task
             _httpContext = httpContext;
         }
 
+        public async Task<GenericResponse<GenericCrud>> DeleteTaskAsync(string taskId)
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "storedProcedureSettings:task:deleteTask");
+                var parameters = new DynamicParameters();
+                var authorizationHeader = _httpContext.HttpContext?.Request.Headers["Authorization"];
+                var userId = Cryptography.GetUserIdByJwt(authorizationHeader ?? "");
+                parameters.Add("UserId", userId, DbType.String);
+                parameters.Add("TaskId", taskId, DbType.String);
+
+                var result = await _dapperService.ExecuteStoredProcedureAsync<GenericCrud>(spData, parameters);
+                if (result.HasError)
+                {
+                    var error = MessageErrorBuilder.GenerateError(result.Message ?? "");
+                    return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = error };
+                }
+                return new GenericResponse<GenericCrud>()
+                {
+                    StatusCode = 200,
+                    Content = result.Results
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) };
+
+            }
+        }
+
+        public async Task<GenericResponse<List<TaskResponseGet>>> GetAllTasksAsync()
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "storedProcedureSettings:task:getAllTask");
+                var parameters = new DynamicParameters();
+                var authorizationHeader = _httpContext.HttpContext?.Request.Headers["Authorization"];
+                var userId = Cryptography.GetUserIdByJwt(authorizationHeader ?? "");
+                parameters.Add("UserId", userId, DbType.String);
+
+                var result = await _dapperService.ExecuteStoredProcedureAsync<TaskResponseGet>(spData, parameters,true);
+                if (result.HasError)
+                {
+                    var error = MessageErrorBuilder.GenerateError(result.Message ?? "");
+                    return new GenericResponse<List<TaskResponseGet>>() { StatusCode = 500, Message = error };
+                }
+                return new GenericResponse<List<TaskResponseGet>>()
+                {
+                    StatusCode = 200,
+                    Content = result.Results
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponse<List<TaskResponseGet>> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) };
+
+            }
+        }
+
+        public async Task<GenericResponse<List<TaskResponseGet>>> GetCompletedTasksAsync()
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "storedProcedureSettings:task:getCompletedTask");
+                var parameters = new DynamicParameters();
+                var authorizationHeader = _httpContext.HttpContext?.Request.Headers["Authorization"];
+                var userId = Cryptography.GetUserIdByJwt(authorizationHeader ?? "");
+                parameters.Add("UserId", userId, DbType.String);
+
+                var result = await _dapperService.ExecuteStoredProcedureAsync<TaskResponseGet>(spData, parameters, true);
+                if (result.HasError)
+                {
+                    var error = MessageErrorBuilder.GenerateError(result.Message ?? "");
+                    return new GenericResponse<List<TaskResponseGet>>() { StatusCode = 500, Message = error };
+                }
+                return new GenericResponse<List<TaskResponseGet>>()
+                {
+                    StatusCode = 200,
+                    Content = result.Results
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponse<List<TaskResponseGet>> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) };
+            }
+        }
+
         public async Task<GenericResponse<TaskResponseGet>> GetSpecificTaskAsync(string taskId)
         {
             try
@@ -63,6 +150,33 @@ namespace web_api_simposium.Repositories.BusinessLogic.Task
                 parameters.Add("Title", task.Title, DbType.String);
                 parameters.Add("Description", task.Description, DbType.String);
 
+                var result = await _dapperService.ExecuteStoredProcedureAsync<GenericCrud>(spData, parameters);
+
+                if (!result.HasError)
+                {
+                    return result.Results!.Success
+                        ? new GenericResponse<GenericCrud> { StatusCode = 201, Content = result.Results }
+                        : new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(result.Results.Exception) };
+                }
+
+                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(result.Message ?? "") };
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponse<GenericCrud> { StatusCode = 500, Message = MessageErrorBuilder.GenerateError(ex.Message) };
+            }
+        }
+
+        public async Task<GenericResponse<GenericCrud>> UpdatedTaskAsync(TaskUpdated task)
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "storedProcedureSettings:task:taskUpdate");
+                var parameters = new DynamicParameters();
+                parameters.Add("Id", task.Id, DbType.String);
+                parameters.Add("Title", task.Title, DbType.String);
+                parameters.Add("Description", task.Description, DbType.String);
+                parameters.Add("Completed", task.Completed, DbType.Boolean);
                 var result = await _dapperService.ExecuteStoredProcedureAsync<GenericCrud>(spData, parameters);
 
                 if (!result.HasError)
