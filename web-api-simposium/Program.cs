@@ -63,7 +63,7 @@ builder.Services.AddSwaggerGen(c =>
 
     c.SwaggerDoc("Tasks", new OpenApiInfo
     {
-        Title = "Users",
+        Title = "Tasks",
         Version = "v1",
         Description = "Documento para la administracion de las tareas de los usuarios",
         Contact = new OpenApiContact
