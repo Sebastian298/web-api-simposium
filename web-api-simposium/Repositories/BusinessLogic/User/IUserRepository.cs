@@ -1,7 +1,7 @@
 ﻿using web_api_simposium.Models.Operations;
 using web_api_simposium.Models.Responses;
 
-namespace web_api_simposium.Repositories.User
+namespace web_api_simposium.Repositories.BusinessLogic.User
 {
     public interface IUserRepository
     {

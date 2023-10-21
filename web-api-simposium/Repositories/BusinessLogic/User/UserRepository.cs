@@ -8,7 +8,7 @@ using web_api_simposium.Models.Operations;
 using web_api_simposium.Models.Responses;
 using web_api_simposium.Services;
 
-namespace web_api_simposium.Repositories.User
+namespace web_api_simposium.Repositories.BusinessLogic.User
 {
     public class UserRepository : IUserRepository
     {
@@ -16,7 +16,7 @@ namespace web_api_simposium.Repositories.User
         private readonly IDapperService _dapperService;
         private readonly IJwtService _jwtService;
 
-        public UserRepository(IConfiguration configuration,IDapperService dapperService,IJwtService jwtService)
+        public UserRepository(IConfiguration configuration, IDapperService dapperService, IJwtService jwtService)
         {
             _configuration = configuration;
             _dapperService = dapperService;
@@ -59,7 +59,7 @@ namespace web_api_simposium.Repositories.User
                 var parameters = new DynamicParameters();
                 parameters.Add("Email", user.Email, DbType.String);
                 parameters.Add("Password", Cryptography.ConvertToHash(user.Password), DbType.String);
-                
+
                 var result = await _dapperService.ExecuteStoredProcedureAsync<UserLoginResponse>(spData, parameters);
 
                 if (!result.HasError)
