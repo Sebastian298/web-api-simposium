@@ -8,12 +8,6 @@ namespace web_api_simposium.Attributes
 {
     public class AuthorizeAttribute : Attribute, IAsyncAuthorizationFilter
     {
-        private readonly IConfiguration _configuration;
-
-        public AuthorizeAttribute(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             GenericResponse<JObject> response = new();
