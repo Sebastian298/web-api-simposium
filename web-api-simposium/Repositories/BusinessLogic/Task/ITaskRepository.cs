@@ -5,6 +5,7 @@ namespace web_api_simposium.Repositories.BusinessLogic.Task
 {
     public interface ITaskRepository
     {
-        Task<GenericResponse<GenericCrud>> TaskRegistration(TaskRegistration task);
+        Task<GenericResponse<GenericCrud>> TaskRegistrationAsync(TaskRegistration task);
+        Task<GenericResponse<TaskResponseGet>> GetSpecificTaskAsync(string taskId);
     }
 }
